@@ -1,0 +1,12 @@
+Dependencies: The puckman package requires the -dev version of packages SDL, SDL_gfx (>=2.0.20) and SDL_image.
+
+Installation process: run the following commands to perform the installation
+$ make
+# make install
+
+Desinstallation process:
+# make uninstall
+
+Any comments, suggestions or issues are welcome: <julien at odent dot net>.
+
+Have fun!
