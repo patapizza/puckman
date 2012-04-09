@@ -1,5 +1,5 @@
 BIN = $(DESTDIR)/usr/bin
-ICONS = $(DESTDIR)/usr/share/puckman
+ICONS = $(DESTDIR)/usr/share/puckman/images
 ICON = $(DESTDIR)/usr/share/pixmaps
 SYMICON = $(DESTDIR)/usr/share/icons/hicolor/48x48/apps
 SHELL = /bin/sh
@@ -14,9 +14,9 @@ puckman: puckman.c
 install: puckman
 	install -d $(BIN) $(ICONS) $(ICON) $(SYMICON)
 	install ./puckman $(BIN)
-	install -m644 *.{gif,png} $(ICONS)
-	install -m644 puckman.png $(ICON)
-	install -m644 puckman.png $(SYMICON)
+	install -m644 images/*.{gif,png} $(ICONS)
+	install -m644 images/puckman.png $(ICON)
+	install -m644 images/puckman.png $(SYMICON)
 
 clean:
 	rm puckman
