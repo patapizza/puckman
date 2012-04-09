@@ -1505,9 +1505,9 @@ void Game_process() {
   }
 }
 SDL_Surface *getImage(char *str) {
-  int size = strlen(str) + strlen(PACPATH) + 1;
+  int size = strlen("images/") + strlen(str) + strlen(PACPATH) + 1;
   char *path = malloc(size * sizeof(char));
-  snprintf(path, size, "%s%s", PACPATH, str);
+  snprintf(path, size, "%simages/%s", PACPATH, str);
   SDL_Surface *image = IMG_Load(path);
   if (!image) {
     printf("IMG_Load: %s\n", IMG_GetError());
