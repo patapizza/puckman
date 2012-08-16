@@ -123,13 +123,13 @@ void writeScores();
 GameData *game;
 
 int main (int argc, char **argv) {
-  game = malloc(sizeof(struct GameData));
-  ImageData *image = malloc(sizeof(struct ImageData));
-  Pacman *pacman = malloc(sizeof(struct Pacman));
-  Ghost *blinky = malloc(sizeof(struct Ghost));
-  Ghost *pinky = malloc(sizeof(struct Ghost));
-  Ghost *inky = malloc(sizeof(struct Ghost));
-  Ghost *clyde = malloc(sizeof(struct Ghost));
+  game = (GameData *) malloc(sizeof(struct GameData));
+  ImageData *image = (ImageData *) malloc(sizeof(struct ImageData));
+  Pacman *pacman = (Pacman *) malloc(sizeof(struct Pacman));
+  Ghost *blinky = (Ghost *) malloc(sizeof(struct Ghost));
+  Ghost *pinky = (Ghost *) malloc(sizeof(struct Ghost));
+  Ghost *inky = (Ghost *) malloc(sizeof(struct Ghost));
+  Ghost *clyde = (Ghost *) malloc(sizeof(struct Ghost));
   game->img = image;
   game->pacman = pacman;
   game->ghosts = blinky;
@@ -169,9 +169,9 @@ int main (int argc, char **argv) {
       drawRules();
     }
     else if (game->state == 7)
-      drawHighscores(game);
+      drawHighscores();
     else if (game->state == 8)
-      drawNewscorer(game);
+      drawNewscorer();
     else {
       Game_process();
       if (game->state != 1) {
@@ -1341,10 +1341,10 @@ void drawNewscorer() {
   dest.x = 130;
   dest.y = 170;
   SDL_BlitSurface(game->img->enter, NULL, game->screen, &dest);
-  int i = 0;
+  unsigned int i = 0;
   dest.x = 100;
   dest.y = 200;
-  char *str = malloc(13 * sizeof(char));
+  char *str = (char *) malloc(13 * sizeof(char));
   while (i < sizeof game->highscores[0][10]) {
     if (game->highscores[0][10][i] > 64 && game->highscores[0][10][i] < 91) {
       snprintf(str, 13, "letter%d.png", game->highscores[0][10][i]);
@@ -1398,7 +1398,7 @@ void Game_init() {
   game->state = 5;
   game->anim_index = 38;
   game->selected = 0;
-  char *str = malloc(11 * sizeof(char));
+  char *str = (char *) malloc(11 * sizeof(char));
   int i = 0;
   while (i < 6) {
     snprintf(str, 11, "candy%d.gif", i);
@@ -1407,7 +1407,7 @@ void Game_init() {
   free(str);
   game->candy_index = 0;
   game->candy_blow_delay = 0;
-  char *scores_file = malloc((strlen(getenv("HOME")) + 25) * sizeof(char));
+  char *scores_file = (char *) malloc((strlen(getenv("HOME")) + 25) * sizeof(char));
   snprintf(scores_file, strlen(getenv("HOME")) + 25, "%s/.puckman/highscores.txt", getenv("HOME"));
   game->scores_file = scores_file;
   FILE *f;
@@ -1506,7 +1506,7 @@ void Game_process() {
 }
 SDL_Surface *getImage(char *str) {
   int size = strlen("images/") + strlen(str) + strlen(PACPATH) + 1;
-  char *path = malloc(size * sizeof(char));
+  char *path = (char *) malloc(size * sizeof(char));
   snprintf(path, size, "%simages/%s", PACPATH, str);
   SDL_Surface *image = IMG_Load(path);
   if (!image) {
@@ -1517,7 +1517,7 @@ SDL_Surface *getImage(char *str) {
   return image;
 }
 SDL_Surface *getLetter(int letter) {
-  char *str = malloc(13 * sizeof(char));
+  char *str = (char *) malloc(13 * sizeof(char));
   snprintf(str, 13, "letter%d.png", letter);
   SDL_Surface *image = getImage(str);
   free(str);
@@ -1708,7 +1708,7 @@ void Ghost_init() {
   }
 }
 void Ghost_load(Ghost *ghost) {
-  char *str = malloc(13 * sizeof(char));
+  char *str = (char *) malloc(13 * sizeof(char));
   int i = 0, j;
   while (i < 4) {
     j = 0;
@@ -1729,7 +1729,7 @@ void Ghost_load(Ghost *ghost) {
     ghost->scared2[j++] = getImage(str);
   }
   free(str);
-  str = malloc(10 * sizeof(char));
+  str = (char *) malloc(10 * sizeof(char));
   j = 0;
   while (j < 4) {
     snprintf(str, 10, "eyes%d.png", j);
@@ -1862,55 +1862,55 @@ void Ghost_unscare() {
   }
 }
 void Image_init() {
-  game->img->life = getImage("pacman11.gif");
-  game->img->lives = getImage("lives.png");
-  game->img->gameover = getImage("gameover.png");
-  game->img->paused = getImage("paused.png");
-  game->img->getready = getImage("getready.png");
-  game->img->level = getImage("level.png");
-  game->img->score = getImage("score.png");
-  char *str = malloc(11 * sizeof(char));
+  game->img->life = getImage((char *) "pacman11.gif");
+  game->img->lives = getImage((char *) "lives.png");
+  game->img->gameover = getImage((char *) "gameover.png");
+  game->img->paused = getImage((char *) "paused.png");
+  game->img->getready = getImage((char *) "getready.png");
+  game->img->level = getImage((char *) "level.png");
+  game->img->score = getImage((char *) "score.png");
+  char *str = (char *) malloc(11 * sizeof(char));
   int i = 0;
   while (i < 4) {
     snprintf(str, 11, "fruit%d.png", i);
     game->img->levels[i++] = getImage(str);
   }
-  char *str2 = malloc(6 * sizeof(char));
+  char *str2 = (char *) malloc(6 * sizeof(char));
   i = 0;
   while (i < 10) {
     snprintf(str, 6, "%d.png", i);
     game->img->digits[i++] = getImage(str);
   }
   free(str2);
-  game->img->dot = getImage("dot.png");
-  game->img->bonus100 = getImage("100.png");
-  game->img->bonus200 = getImage("200.png");
-  game->img->bonus300 = getImage("300.png");
-  game->img->bonus400 = getImage("400.png");
-  game->img->bonus500 = getImage("500.png");
-  game->img->bonus700 = getImage("700.png");
-  game->img->bonus800 = getImage("800.png");
-  game->img->bonus1600 = getImage("1600.png");
+  game->img->dot = getImage((char *) "dot.png");
+  game->img->bonus100 = getImage((char *) "100.png");
+  game->img->bonus200 = getImage((char *) "200.png");
+  game->img->bonus300 = getImage((char *) "300.png");
+  game->img->bonus400 = getImage((char *) "400.png");
+  game->img->bonus500 = getImage((char *) "500.png");
+  game->img->bonus700 = getImage((char *) "700.png");
+  game->img->bonus800 = getImage((char *) "800.png");
+  game->img->bonus1600 = getImage((char *) "1600.png");
   i = 0;
   while (i < 39) {
     snprintf(str, 11, "anim%d.gif", i);
     game->img->anim[i++] = getImage(str);
   }
   free(str);
-  game->img->logo = getImage("logo.png");
-  game->img->legal = getImage("legal.png");
-  game->img->notice = getImage("notice.png");
-  game->img->playgame[0] = getImage("playgame0.png");
-  game->img->playgame[1] = getImage("playgame1.png");
-  game->img->highscores[0] = getImage("highscores0.png");
-  game->img->highscores[1] = getImage("highscores1.png");
-  game->img->rules[0] = getImage("rules0.png");
-  game->img->rules[1] = getImage("rules1.png");
-  game->img->rules_main = getImage("rules.png");
-  game->img->quitgame[0] = getImage("quitgame0.png");
-  game->img->quitgame[1] = getImage("quitgame1.png");
-  game->img->back = getImage("back.png");
-  game->img->enter = getImage("enter.png");
+  game->img->logo = getImage((char *) "logo.png");
+  game->img->legal = getImage((char *) "legal.png");
+  game->img->notice = getImage((char *) "notice.png");
+  game->img->playgame[0] = getImage((char *) "playgame0.png");
+  game->img->playgame[1] = getImage((char *) "playgame1.png");
+  game->img->highscores[0] = getImage((char *) "highscores0.png");
+  game->img->highscores[1] = getImage((char *) "highscores1.png");
+  game->img->rules[0] = getImage((char *) "rules0.png");
+  game->img->rules[1] = getImage((char *) "rules1.png");
+  game->img->rules_main = getImage((char *) "rules.png");
+  game->img->quitgame[0] = getImage((char *) "quitgame0.png");
+  game->img->quitgame[1] = getImage((char *) "quitgame1.png");
+  game->img->back = getImage((char *) "back.png");
+  game->img->enter = getImage((char *) "enter.png");
 }
 void Inky_chase(Ghost *ghost) {
   Ghost *blinky = ghost->next->next;
@@ -2010,7 +2010,7 @@ void Pacman_init() {
   game->pacman->nextDir = LEFT;
 }
 void Pacman_load() {
-  char *str = malloc(13 * sizeof(char));
+  char *str = (char *) malloc(13 * sizeof(char));
   int i = 0, j;
   while (i < 4) {
     j = 0;
@@ -2021,7 +2021,7 @@ void Pacman_load() {
     ++i;
   }
   free(str);
-  str = malloc(11 * sizeof(char));
+  str = (char *) malloc(11 * sizeof(char));
   i = 0;
   while (i < 12) {
     snprintf(str, 11, "dead%d.gif", i);
@@ -2812,7 +2812,7 @@ void writeScores() {
     printf("Cannot open file %s\n", game->scores_file);
     return;
   }
-  char *str = malloc(41 * sizeof(char));
+  char *str = (char *) malloc(41 * sizeof(char));
   int i = 0;
   while (i < 10) {
     snprintf(str, 41, "%s:%s\n", game->highscores[0][i], game->highscores[1][i]);
